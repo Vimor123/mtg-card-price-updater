@@ -13,3 +13,4 @@ No more searching prices, single card by card, for hours, only for the data to b
 ## P.S.
 
 openpyxl library needs to be installed
+selenium library needs to be installed
