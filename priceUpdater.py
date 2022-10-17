@@ -24,9 +24,11 @@ def getAllCards(excelFileName):
     while worksheet[nameColumn + str(readingRow)].value != None:
         cardName = worksheet[nameColumn + str(readingRow)].value
         setName = worksheet[setColumn + str(readingRow)].value
+        version = worksheet[versionColumn + str(readingRow)].value
         card = {}
         card["cardName"] = cardName
         card["setName"] = setName
+        card["version"] = version
         cards.append(card)
         readingRow += 1
 
@@ -61,6 +63,13 @@ def getCardPrice(card):
             else:
                 urlName += letter
         url += urlName
+
+        if card["version"] == "V.1":
+            url += "-V1"
+        elif card["version"] == "V.2":
+            url += "-V2"
+        elif card["version"] == "Foil":
+            url += "?isFoil=Y"
         
         return url
 
@@ -70,6 +79,15 @@ def getCardPrice(card):
     soup = BeautifulSoup(page.content, 'html.parser')
     
     lists = soup.find_all('div', class_="info-list-container")
+
+    if len(lists) == 0:
+        card["cardName"] = card["cardName"].replace("'", ' ')
+        url = generateCardURL(card)
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+
+        lists = soup.find_all('div', class_="info-list-container")
+    
     container = lists[0]
     column = container.find_all('dd', class_="col-6 col-xl-7")
     priceTrendDD = column[5]
@@ -96,7 +114,11 @@ def updateExcelSpreadsheet(cards, excelFileName):
 
     writingRow = startingRow
     for card in cards:
-        worksheet[priceColumn + str(writingRow)].value = card["cardPrice"]
+        cardPriceString = card["cardPrice"]
+        cardPrice = cardPriceString.replace(',', '.')
+        if cardPrice != "N":
+            cardPrice = float(cardPrice)
+        worksheet[priceColumn + str(writingRow)].value = cardPrice
         writingRow += 1
 
     workbook.save(excelFileName)
