@@ -87,16 +87,22 @@ def getCardPrice(card):
         soup = BeautifulSoup(page.content, 'html.parser')
 
         lists = soup.find_all('div', class_="info-list-container")
+
+    try:
     
-    container = lists[0]
-    column = container.find_all('dd', class_="col-6 col-xl-7")
-    priceTrendDD = column[5]
-    priceTrendSpanList = priceTrendDD.find_all('span')
-    priceTrendSpan = priceTrendSpanList[0]
+        container = lists[0]
+        column = container.find_all('dd', class_="col-6 col-xl-7")
+        priceTrendDD = column[5]
+        priceTrendSpanList = priceTrendDD.find_all('span')
+        priceTrendSpan = priceTrendSpanList[0]
 
-    priceTrendString = priceTrendSpan.contents[0]
+        priceTrendString = priceTrendSpan.contents[0]
 
-    priceTrendString = priceTrendString[:-2]
+        priceTrendString = priceTrendString[:-2]
+
+    except IndexError:
+        
+        priceTrendString = "N"
     
     return priceTrendString
 
