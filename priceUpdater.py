@@ -76,8 +76,7 @@ def getCardPrice(card):
     
     url = generateCardURL(card)
     page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    
+    soup = BeautifulSoup(page.content, 'html.parser')    
     lists = soup.find_all('div', class_="info-list-container")
 
     if len(lists) == 0:
