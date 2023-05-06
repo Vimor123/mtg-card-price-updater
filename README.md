@@ -2,6 +2,10 @@
 
 A script that updates card prices in an Excel spreadsheet
 
+# Important note !!!
+
+Script does not work anymore, requests return "Forbidden" status!
+
 ## Premise
 
 Have a Magic the Gathering collection? Wanna know how much your cards are worth according to CardMarket? 
